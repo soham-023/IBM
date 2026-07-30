@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StudyGenius AI - Smart Study Generator powered by IBM watsonx.ai. Personalize your learning with AI-generated summaries, flashcards, quizzes, and study plans.">
+    <meta name="keywords" content="study generator, AI study tool, flashcards, quiz, study planner, IBM watsonx">
+    <title>StudyGenius AI | Smart Study Generator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- ===== SIDEBAR ===== -->
+        <aside id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon"><i class="ri-brain-line"></i></div>
+                <span class="brand-text">StudyGenius</span>
+                <span class="brand-badge">AI</span>
+            </div>
+
+            <nav class="nav-list">
+                <div class="nav-item active" data-section="dashboard">
+                    <i class="ri-dashboard-3-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-section="generator">
+                    <i class="ri-magic-line"></i>
+                    <span>Generator</span>
+                </div>
+                <div class="nav-item" data-section="flashcards">
+                    <i class="ri-stack-line"></i>
+                    <span>Flashcards</span>
+                </div>
+                <div class="nav-item" data-section="quiz">
+                    <i class="ri-questionnaire-line"></i>
+                    <span>Quiz</span>
+                </div>
+                <div class="nav-item" data-section="planner">
+                    <i class="ri-calendar-schedule-line"></i>
+                    <span>Planner</span>
+                </div>
+                <div class="nav-item" data-section="settings">
+                    <i class="ri-settings-4-line"></i>
+                    <span>Settings</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar">SC</div>
+                <div>
+                    <div class="user-name">Student</div>
+                    <div class="user-role">Learner</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main id="main-content">
+
+            <!-- ===== DASHBOARD ===== -->
+            <div id="section-dashboard" class="section active">
+                <div class="section-header">
+                    <h1>Welcome back, Student!</h1>
+                    <p class="subtitle">Here's your study progress overview</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card" data-accent="purple">
+                        <div class="stat-icon purple-bg"><i class="ri-book-open-line"></i></div>
+                        <div class="stat-value" id="stat-topics">24</div>
+                        <div class="stat-label">Topics Covered</div>
+                    </div>
+                    <div class="stat-card" data-accent="cyan">
+                        <div class="stat-icon cyan-bg"><i class="ri-stack-line"></i></div>
+                        <div class="stat-value" id="stat-flashcards">156</div>
+                        <div class="stat-label">Cards Reviewed</div>
+                    </div>
+                    <div class="stat-card" data-accent="coral">
+                        <div class="stat-icon coral-bg"><i class="ri-trophy-line"></i></div>
+                        <div class="stat-value" id="stat-quiz-score">87%</div>
+                        <div class="stat-label">Avg Quiz Score</div>
+                    </div>
+                    <div class="stat-card" data-accent="amber">
+                        <div class="stat-icon amber-bg"><i class="ri-fire-line"></i></div>
+                        <div class="stat-value" id="stat-streak">12</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-left">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3><i class="ri-bar-chart-2-line"></i> Study Progress</h3>
+                                <span class="panel-badge">This Week</span>
+                            </div>
+                            <canvas id="progress-chart-canvas" width="600" height="300"></canvas>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3><i class="ri-focus-3-line"></i> Areas to Improve</h3>
+                            </div>
+                            <div id="weak-areas-list"></div>
+                        </div>
+                    </div>
+                    <div class="dashboard-right">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3><i class="ri-lightbulb-flash-line"></i> AI Predictions</h3>
+                                <div class="pulse-dot"></div>
+                            </div>
+                            <div id="alerts-list"></div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3><i class="ri-time-line"></i> Recent Activity</h3>
+                            </div>
+                            <div id="activity-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== STUDY GENERATOR ===== -->
+            <div id="section-generator" class="section">
+                <div class="section-header">
+                    <h1>Study Material Generator</h1>
+                    <p class="subtitle">Upload your content and let AI create personalized study materials</p>
+                </div>
+
+                <div class="generator-grid">
+                    <div class="input-panel">
+                        <div class="input-tabs">
+                            <div class="input-tab active" data-type="text">
+                                <i class="ri-file-text-line"></i>
+                                <span>Text / Notes</span>
+                            </div>
+                            <div class="input-tab" data-type="image">
+                                <i class="ri-image-line"></i>
+                                <span>Image / Scan</span>
+                            </div>
+                            <div class="input-tab" data-type="voice">
+                                <i class="ri-mic-line"></i>
+                                <span>Voice Query</span>
+                            </div>
+                        </div>
+
+                        <div id="text-input-area">
+                            <textarea id="text-input" placeholder="Paste your notes, lecture content, or any study material here..." rows="12"></textarea>
+                        </div>
+
+                        <div id="image-input-area" class="hidden">
+                            <div id="upload-zone">
+                                <i class="ri-upload-cloud-2-line"></i>
+                                <p>Drag & drop image or click to upload</p>
+                                <span class="upload-hint">Supports JPG, PNG, PDF</span>
+                                <input type="file" id="file-input" accept="image/*,.pdf" hidden>
+                            </div>
+                            <div id="image-preview"></div>
+                        </div>
+
+                        <div id="voice-input-area" class="hidden">
+                            <div class="voice-controls">
+                                <button id="record-btn">
+                                    <i class="ri-mic-line"></i>
+                                </button>
+                                <p id="voice-status">Click to start recording</p>
+                                <div id="voice-transcript"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="output-panel">
+                        <div class="output-tabs">
+                            <div class="output-tab active" data-format="summary">
+                                <i class="ri-file-list-3-line"></i>
+                                <span>Summary</span>
+                            </div>
+                            <div class="output-tab" data-format="flashcards">
+                                <i class="ri-stack-line"></i>
+                                <span>Flashcards</span>
+                            </div>
+                            <div class="output-tab" data-format="concept-map">
+                                <i class="ri-mind-map"></i>
+                                <span>Concept Map</span>
+                            </div>
+                            <div class="output-tab" data-format="study-guide">
+                                <i class="ri-book-3-line"></i>
+                                <span>Study Guide</span>
+                            </div>
+                        </div>
+
+                        <button id="generate-btn" class="btn-primary btn-glow">
+                            <i class="ri-sparkling-2-line"></i> Generate with AI
+                        </button>
+
+                        <div id="output-display">
+                            <div class="empty-state">
+                                <i class="ri-robot-2-line"></i>
+                                <p>Your AI-generated study material will appear here</p>
+                            </div>
+                        </div>
+
+                        <div id="loading-spinner" class="hidden">
+                            <div class="spinner"></div>
+                            <p>Generating study material...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== FLASHCARDS ===== -->
+            <div id="section-flashcards" class="section">
+                <div class="section-header">
+                    <h1>Flashcard Deck</h1>
+                    <p class="subtitle">Review and master your study cards</p>
+                </div>
+
+                <div class="flashcard-top-bar">
+                    <select id="deck-selector" class="select-styled">
+                        <option value="All Decks">All Decks</option>
+                        <option value="Biology" selected>Biology</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                    </select>
+                    <span id="card-counter" class="card-counter">1 / 10</span>
+                    <div class="mastery-wrapper">
+                        <div id="mastery-bar">
+                            <div id="mastery-fill" style="width: 30%"></div>
+                        </div>
+                        <span id="mastery-label">30% Mastered</span>
+                    </div>
+                </div>
+
+                <div id="flashcard-container">
+                    <div class="flashcard">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <span class="card-category">Biology</span>
+                                <div class="card-content">What is the powerhouse of the cell?</div>
+                                <div class="card-hint"><i class="ri-refresh-line"></i> Click to flip</div>
+                            </div>
+                            <div class="card-back">
+                                <div class="card-answer">The mitochondria is the powerhouse of the cell.</div>
+                                <div class="card-explanation">It generates ATP through cellular respiration.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-controls">
+                    <button id="prev-card" class="btn-control"><i class="ri-arrow-left-s-line"></i></button>
+                    <button id="flip-card" class="btn-control btn-flip"><i class="ri-refresh-line"></i> Flip</button>
+                    <button id="next-card" class="btn-control"><i class="ri-arrow-right-s-line"></i></button>
+                </div>
+
+                <div class="mastery-buttons">
+                    <button id="mark-unknown" class="btn-mastery btn-unknown">
+                        <i class="ri-close-circle-line"></i> Still Learning
+                    </button>
+                    <button id="mark-known" class="btn-mastery btn-known">
+                        <i class="ri-checkbox-circle-line"></i> Got It!
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== QUIZ ===== -->
+            <div id="section-quiz" class="section">
+                <div class="section-header">
+                    <h1>Practice Quiz</h1>
+                    <p class="subtitle">Test your knowledge with AI-generated questions</p>
+                </div>
+
+                <div id="quiz-setup">
+                    <div class="quiz-config">
+                        <div class="config-group">
+                            <label>Topic</label>
+                            <select id="quiz-topic-select" class="select-styled">
+                                <option value="General">General</option>
+                                <option value="Biology">Biology</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Mathematics">Mathematics</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label>Difficulty</label>
+                            <select id="quiz-difficulty" class="select-styled">
+                                <option value="Easy">Easy</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="Hard">Hard</option>
+                                <option value="Mixed">Mixed</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label>Questions</label>
+                            <select id="quiz-count" class="select-styled">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="start-quiz-btn" class="btn-primary btn-glow">
+                        <i class="ri-play-line"></i> Start Quiz
+                    </button>
+                </div>
+
+                <div id="quiz-area" class="hidden">
+                    <div id="quiz-progress-bar">
+                        <div id="quiz-progress-fill"></div>
+                    </div>
+                    <div class="quiz-info-row">
+                        <span id="quiz-progress-text">Question 1 of 10</span>
+                        <span id="quiz-timer-display"><i class="ri-timer-line"></i> 00:30</span>
+                    </div>
+                    <div id="quiz-question-text" class="quiz-question"></div>
+                    <div id="quiz-options" class="quiz-options"></div>
+                    <div id="quiz-explanation" class="quiz-explanation hidden"></div>
+                    <button id="submit-answer-btn" class="btn-primary" disabled>Submit Answer</button>
+                    <button id="next-question-btn" class="btn-primary hidden">
+                        <i class="ri-arrow-right-line"></i> Next Question
+                    </button>
+                </div>
+
+                <div id="quiz-results" class="hidden">
+                    <div class="score-circle">
+                        <span id="quiz-final-score">0%</span>
+                    </div>
+                    <h2 class="results-title">Quiz Complete!</h2>
+                    <div class="quiz-stats-row"></div>
+                    <div id="quiz-breakdown"></div>
+                    <button id="retake-quiz-btn" class="btn-primary">
+                        <i class="ri-restart-line"></i> Retake Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== PLANNER ===== -->
+            <div id="section-planner" class="section">
+                <div class="section-header">
+                    <h1>Study Planner</h1>
+                    <p class="subtitle">AI-powered study schedule and recommendations</p>
+                </div>
+
+                <div class="exam-countdown">
+                    <i class="ri-alarm-warning-line"></i>
+                    <span>Next Exam:</span>
+                    <span id="exam-date">Aug 15, 2026</span>
+                    <span class="countdown-separator">—</span>
+                    <span id="days-remaining" class="days-highlight">16 days</span>
+                    <span>remaining</span>
+                </div>
+
+                <div class="planner-grid">
+                    <div class="calendar-panel">
+                        <div class="panel">
+                            <div class="month-nav">
+                                <button class="btn-control btn-sm nav-prev"><i class="ri-arrow-left-s-line"></i></button>
+                                <span id="current-month">August 2026</span>
+                                <button class="btn-control btn-sm nav-next"><i class="ri-arrow-right-s-line"></i></button>
+                            </div>
+                            <div class="calendar-headers">
+                                <div class="calendar-header">Sun</div>
+                                <div class="calendar-header">Mon</div>
+                                <div class="calendar-header">Tue</div>
+                                <div class="calendar-header">Wed</div>
+                                <div class="calendar-header">Thu</div>
+                                <div class="calendar-header">Fri</div>
+                                <div class="calendar-header">Sat</div>
+                            </div>
+                            <div id="calendar-days" class="calendar-grid"></div>
+                        </div>
+                        <div class="panel" style="margin-top: 20px;">
+                            <div class="panel-header">
+                                <h3><i class="ri-calendar-todo-line"></i> Tasks</h3>
+                            </div>
+                            <div id="today-tasks"></div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations-panel">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3><i class="ri-robot-2-line"></i> AI Recommended Plan</h3>
+                            </div>
+                            <div id="recommended-plan"></div>
+                        </div>
+                        <div class="panel" style="margin-top: 20px;">
+                            <div class="panel-header">
+                                <h3><i class="ri-bar-chart-box-line"></i> Topic Priorities</h3>
+                            </div>
+                            <div id="topic-priorities"></div>
+                        </div>
+                        <button id="generate-plan-btn" class="btn-primary btn-glow" style="margin-top: 20px;">
+                            <i class="ri-sparkling-2-line"></i> Generate AI Study Plan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SETTINGS ===== -->
+            <div id="section-settings" class="section">
+                <div class="section-header">
+                    <h1>Settings</h1>
+                    <p class="subtitle">Configure your IBM watsonx.ai integration</p>
+                </div>
+
+                <div class="settings-panel">
+                    <div class="settings-group">
+                        <div class="ibm-badge">
+                            <span class="ibm-logo">IBM</span>
+                            <span>watsonx.ai</span>
+                        </div>
+                        <h3>IBM watsonx.ai Configuration</h3>
+
+                        <div class="form-group">
+                            <label for="ibm-api-key-input">API Key</label>
+                            <input type="password" id="ibm-api-key-input" placeholder="Enter your IBM API key">
+                        </div>
+                        <div class="form-group">
+                            <label for="ibm-url-input">API URL</label>
+                            <input type="text" id="ibm-url-input" placeholder="https://us-south.ml.cloud.ibm.com" value="https://us-south.ml.cloud.ibm.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="ibm-project-id-input">Project ID</label>
+                            <input type="text" id="ibm-project-id-input" placeholder="Enter your project ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="ibm-model-select">Model</label>
+                            <select id="ibm-model-select" class="select-styled">
+                                <option value="ibm/granite-13b-chat-v2">IBM Granite 13B Chat v2</option>
+                                <option value="ibm/granite-3-8b-instruct">IBM Granite 3 8B Instruct</option>
+                                <option value="meta-llama/llama-3-1-70b-instruct">Meta Llama 3.1 70B</option>
+                                <option value="mistralai/mistral-large">Mistral Large</option>
+                            </select>
+                        </div>
+
+                        <div class="btn-row">
+                            <button id="test-connection-btn" class="btn-secondary">
+                                <i class="ri-wifi-line"></i> Test Connection
+                            </button>
+                            <button id="save-settings-btn" class="btn-primary">
+                                <i class="ri-save-line"></i> Save Settings
+                            </button>
+                        </div>
+                        <div id="connection-status"></div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Preferences</h3>
+                        <div class="pref-item">
+                            <div class="pref-info">
+                                <div class="pref-label">Dark Mode</div>
+                                <div class="pref-desc">Use dark theme (default)</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="pref-item">
+                            <div class="pref-info">
+                                <div class="pref-label">Study Reminders</div>
+                                <div class="pref-desc">Get notified for study sessions</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="pref-item">
+                            <div class="pref-info">
+                                <div class="pref-label">Sound Effects</div>
+                                <div class="pref-desc">Play sounds on quiz answers</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button id="modal-close" class="btn-icon"><i class="ri-close-line"></i></button>
+            </div>
+            <div id="modal-content" class="modal-content"></div>
+        </div>
+    </div>
+
+    <script src="js/ibm-service.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
