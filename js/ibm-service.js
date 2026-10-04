@@ -20,6 +20,7 @@ class IBMService {
   }
 
   isConfigured() {
+    
     return !!(this.apiKey && this.projectId);
   }
 
