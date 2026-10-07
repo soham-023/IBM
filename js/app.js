@@ -27,6 +27,7 @@ function showToast(message, duration = 3000) {
 
 // ===== DASHBOARD =====
 // Mock data for dashboard
+
 const studyData = {
   topicsCovered: 24,
   flashcardsReviewed: 156,
@@ -54,6 +55,7 @@ const studyData = {
 };
 
 function initDashboard() {
+  
   // Render weak areas
   const weakAreasList = document.getElementById('weak-areas-list');
   weakAreasList.innerHTML = studyData.weakAreas.map(area => `
