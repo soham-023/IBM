@@ -19,6 +19,7 @@ body {
 /* Primary: #4f46e5 (indigo) */
 /* Primary Hover: #4338ca */
 /* Success: #059669 */
+
 /* Danger: #dc2626 */
 /* Warning: #d97706 */
 /* Background: #f0f2f5 */
@@ -91,6 +92,7 @@ body {
 }
 
 /* CARDS */
+
 .card {
     background: #ffffff;
     border-radius: 8px;
